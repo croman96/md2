@@ -29,7 +29,7 @@ def checksum(message):
     for i in range(len(message) // 16):
         # Calculate checksum of block using each byte of the block
         for j in range(16):
-            c = message[i * 16 + j]
+            c = message[16 * i + j]
             l = C[j] = S[c ^ l]
     message += C
     return message
@@ -40,8 +40,8 @@ def hash(message):
 
     for i in range(len(message) // 16):
         for j in range(16):
-            x[16 + j] = message[i * 16 + j]
-            x[2 * 16 + j] = x[16 + j] ^ x[j]
+            x[j + 16] = message[i * 16 + j]
+            x[j + 32] = x[j + 16] ^ x[j]
 
         t = 0
         for j in range(18):
@@ -58,22 +58,23 @@ def hash(message):
 def main():
 
 
-    plain_text = []
-    # parse input file
-    for line in fileinput.input():
-        try:
-            # add line after removing the newline character
-            plain_text.append(line[:-1])
-        except:
-            break
-    # plain text in plain_text[0]
-    message = plain_text[0]
+    # plain_text = []
+    # # parse input file
+    # for line in fileinput.input():
+    #     try:
+    #         # add line after removing the newline character
+    #         plain_text.append(line[:-1])
+    #     except:
+    #         break
+    # # plain text in plain_text[0]
+    # message = plain_text[0]
+    message = input()
     message_bytes = bytearray(message, 'utf-8')
     padding = 16 - (len(message_bytes) % 16)
     message_bytes += bytearray(padding for x in range(padding))
 
     result = hash(checksum(message_bytes))
-    print(binascii.hexlify(result[:16]).decode('utf-8'))
+    print(binascii.hexlify(result).decode('utf-8'))
 
 
 
