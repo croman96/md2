@@ -54,7 +54,7 @@ def main():
             plain_text.append(line[:-1])
         except:
             break
-    plain text in plain_text[0]
+    # plain text in plain_text[0]
     message = plain_text[0]
     # message = input()
     if (message == '""'):
