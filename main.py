@@ -33,31 +33,22 @@ def checksum(message):
             l = C[j] = S[c ^ l]
     message += C
     return message
-#
+
 def hash(message):
-
     x = bytearray([0 for x in range(48)])
-
     for i in range(len(message) // 16):
         for j in range(16):
             x[16 + j] = message[i * 16 + j]
             x[2 * 16 + j] = x[16 + j] ^ x[j]
-
         t = 0
         for j in range(18):
             for k in range(48):
                 t = x[k] ^ S[t]
                 x[k] = t
             t = (t + j) % 256
-
     return x[:16]
 
-
-
-
 def main():
-
-
     plain_text = []
     # parse input file
     for line in fileinput.input():
@@ -74,8 +65,6 @@ def main():
 
     result = hash(checksum(message_bytes))
     print(binascii.hexlify(result[:16]).decode('utf-8'))
-
-
 
 if __name__ == '__main__':
     main()
